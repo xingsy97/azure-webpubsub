@@ -16,6 +16,8 @@ class VirtualWebSocketServer extends WebSocket.Server{
 	constructor() {
 		 super({port: undefined, noServer: true}); 
 	}
+
+	close() { }
 }
 
 /** 
@@ -25,7 +27,6 @@ class VirtualWebSocketServer extends WebSocket.Server{
 class ClientConnectionContext extends VirtualWebSocketServer{
 	serviceClient: WebPubSubServiceClient;
 	connectionId: string;
-
 	constructor(serviceClient: WebPubSubServiceClient, connectionId: string) {
 		super();
 		this.serviceClient = serviceClient;
@@ -47,14 +48,15 @@ class ConnectionContext extends VirtualWebSocketServer {
 	serviceClient: WebPubSubServiceClient;
 
 	constructor(wpsConnString: string, options: any, expressApp?: any){
-	// constructor(wpsHttpPort: number, wpsConnString: string, hubName: string, expressApp?: any){
 		super();
 		this.serviceClient = new WebPubSubServiceClient(wpsConnString, options.hubName);
 		this.app = expressApp ? expressApp : express();
-
+		console.log(options);
 		let handler = new WebPubSubEventHandler(options.hubName, ['*'], {
 			path: options.eventHandlerUrl,
-			handleConnect: (req, res) => {
+			handleConnect: (req: any, res) => {
+				console.log("handleConnect");
+				console.log("req = ", req);
 				let connectionId = req.context.connectionId;
 				this.connectionIdToWs.set(connectionId, new ClientConnectionContext(this.serviceClient, connectionId));
 				this.emit("connection", this.connectionIdToWs.get(connectionId), req);
@@ -108,3 +110,4 @@ async function getWebPubSubServerOptions(apolloServer: ApolloServer, pubsub: Wps
 }
 
 export { ConnectionContext, getWebPubSubServerOptions};
+

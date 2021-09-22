@@ -1,0 +1,41 @@
+<html>
+
+<body>
+  <script src="https://requirejs.org/docs/release/2.3.6/minified/require.js"></script>
+  <script src="https://unpkg.com/subscriptions-transport-ws@0.9.19/browser/client.js"></script>
+
+  <h1>Azure Web PubSub GraphQL Subscription</h1>
+  <button id="queryButton"> Query </button>
+  <div id="messages"></div>
+  <script>
+    var wsUrl = "<websocket-url>";
+    function appendToMessage(msg) {
+      let m = document.createElement('p'); m.innerHTML = msg;
+      return messages.append(m);
+    }
+    
+    async function subscribe() {
+      // let res = await fetch(`/negotiate`);
+      // if (res.status === 401) return appendToMessage('Not authorized, click <a href="/auth">here</a> to login');
+      // let data = await res.json();
+      data = {url: wsUrl};
+      appendToMessage("WebSocket Url = " + data.url);
+      let client = new window.SubscriptionsTransportWs.SubscriptionClient(data.url, { reconnect: false },);
+
+      var x = client.request({
+        query: 'subscription{ numberIncremented }',
+      })
+
+      x.subscribe({
+          next (data) {
+            appendToMessage(JSON.stringify(data));
+        }
+      });
+    }
+    queryButton.addEventListener('click', e => {
+        subscribe();
+    });
+  </script>
+</body>
+
+</html>

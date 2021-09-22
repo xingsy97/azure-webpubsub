@@ -29,22 +29,35 @@
   "scripts": {
     "watch": "tsc -w",
     "compile": "tsc",
+    "watch:demo": "ts-node-dev --respawn -- src/demos/demo.ts",
     "demo": "mocha --reporter spec --full-trace ./dist/demos/demo.js",
     "naive": "mocha --reporter spec --full-trace ./dist/demos/demo-without-webpubsub.js",
     "posttest": "npm run lint",
-    "lint": "tslint --project ./tsconfig.json ./src/**/*.ts"
+    "lint": "tslint --project ./tsconfig.json ./src/**/*.ts",
+    "watch:github": "ts-node-dev --respawn -- src/github.ts Endpoint=https://xsy-wps-dev.webpubsub.azure.com;AccessKey=V2BiOd98dKFcWGaBlCwjH0o9XaRg4DaWrEIIMhFudho=;Version=1.0; c7c3bb449781f830f0c9 006c27050535a2eaeaf4f4b14c80f012e7e79770 xingsy97",
+    "github": "node dist/github.js Endpoint=https://xsy-wps-dev.webpubsub.azure.com;AccessKey=V2BiOd98dKFcWGaBlCwjH0o9XaRg4DaWrEIIMhFudho=;Version=1.0; c7c3bb449781f830f0c9 006c27050535a2eaeaf4f4b14c80f012e7e79770 xingsy97"
   },
   "dependencies": {
+    "@apollo/client": "^3.4.7",
     "@azure/web-pubsub": "^1.0.0-beta.3",
-    "@azure/web-pubsub-express": "^1.0.0-beta.1",
+    "@azure/web-pubsub-express": "^1.0.0-beta.2",
     "@graphql-tools/schema": "^7.1.5",
+    "apollo-boost": "^0.4.9",
+    "apollo-client": "^2.6.10",
     "apollo-server": "^2.21.1",
+    "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "express-ws": "^5.0.2",
+    "fs": "0.0.1-security",
+    "github": "^14.0.0",
     "graphql": "^15.5.0",
     "graphql-subscriptions": "^1.1.0",
     "http": "0.0.1-security",
     "iterall": "^1.2.2",
-    "nodemon": "^2.0.7",
+    "passport": "^0.4.1",
+    "passport-github2": "^0.1.12",
+    "react": "^17.0.2",
     "subscriptions-transport-ws": "^0.9.19",
     "uuid": "^8.3.2",
     "ws": "^7.5.2"
@@ -52,6 +65,9 @@
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/chai-as-promised": "^7.1.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/express-session": "^1.17.0",
+    "@types/express-ws": "^3.0.1",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.17.60",
     "@types/simple-mock": "^0.8.0",
@@ -60,7 +76,9 @@
     "chai-as-promised": "^7.1.1",
     "graphql": "^0.13.0",
     "mocha": "^6.2.2",
+    "nodemon": "^2.0.12",
     "simple-mock": "^0.8.0",
+    "ts-node-dev": "^1.1.8",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
   }
