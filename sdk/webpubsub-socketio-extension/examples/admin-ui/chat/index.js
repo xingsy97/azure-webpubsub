@@ -19,7 +19,7 @@ async function main() {
     app.use(express.static(path.join(__dirname, 'public')));
     app.get("/negotiate", azure.negotiate(io, () => {}));
 
-    instrument(io, { auth: false, mode: "development", username: "username", password: "assword"});
+    instrument(io, { auth: false, mode: "development" });
     Namespace.prototype["fetchSockets"] = async function() { return this.local.fetchSockets(); };
 
     let numUsers = 0;
